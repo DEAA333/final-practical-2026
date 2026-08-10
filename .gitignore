@@ -12,3 +12,5 @@ bootstrap/cache/
 .idea/
 .vscode/
 database/*.sqlite
+/exam-a
+/exam-b
