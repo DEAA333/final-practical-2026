@@ -47,14 +47,6 @@ AI tools may be used if the instructor allows them. Students are responsible for
 
 See `EXAM-STUDENT.md`.
 
-## Instructor materials
-
-Do NOT give students:
-- `INSTRUCTOR.md`
-- `tests/Feature/ExamInstructorTest.php`
-- `exam-a/solution/`
-- `exam-b/solution/`
-
 ## Important
 
 This repository intentionally starts incomplete. Students are expected to debug, complete, and extend it according to the exam sheet.
