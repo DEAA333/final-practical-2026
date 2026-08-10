@@ -1,7 +1,7 @@
 # Laravel 13 Practical Exam — Student Brief
 
 ## Scenario
-Complete a Maintenance Management System using Laravel 13, Blade, Eloquent, migrations, validation, authorization and a JSON API.
+Complete a Maintenance Management System using Laravel 13, Blade, Eloquent, migrations, validation, authorization.
 
 ## 15 Practical Tasks
 1. Run, migrate and seed the project successfully.
@@ -16,9 +16,8 @@ Complete a Maintenance Management System using Laravel 13, Blade, Eloquent, migr
 10. Complete the request details page and actions.
 11. Implement rating rules: completed requests only, correct customer only, one rating per request.
 12. Find and fix all intentional bugs without removing required functionality.
-13. Complete the JSON API with filtering and correct error behavior.
-14. Identify and remove an N+1 query risk; explain your eager loading.
-15. Complete the individualized surprise task assigned by the instructor.
+13. Identify and remove an N+1 query risk; explain your eager loading.
+14. Complete the individualized surprise task assigned by the instructor.
 
 ## Submission
 Push to the assigned GitHub repository. Do not commit `.env`, `vendor/`, or `node_modules/`.
