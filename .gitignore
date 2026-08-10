@@ -12,5 +12,6 @@ bootstrap/cache/
 .idea/
 .vscode/
 database/*.sqlite
-/exam-a
-/exam-b
+/exam-a/
+/exam-b/
+/tests/Feature/ExamInstructorTest.php
