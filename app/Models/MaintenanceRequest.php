@@ -1,33 +1,15 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+class MaintenanceRequest extends Model {
+    protected $fillable=['customer_id','technician_id','title','description','priority','status','requested_at'];
+    protected $casts=['requested_at'=>'date'];
 
-class MaintenanceRequest extends Model
-{
-    protected $fillable = [
-        'customer_id', 'technician_id', 'title', 'description',
-        'priority', 'status', 'requested_at'
-    ];
+    // INTENTIONAL EXAM BUG: students must diagnose and correct this relation.
+    public function customer(){return $this->hasMany(Customer::class);}
 
-    protected $casts = ['requested_at' => 'date'];
-
-    // INTENTIONAL EXAM ISSUE: students must verify/fix this relationship.
-    public function customer()
-    {
-        return $this->hasMany(Customer::class);
-    }
-
-    public function technician(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'technician_id');
-    }
-
-    public function rating(): HasOne
-    {
-        return $this->hasOne(Rating::class);
-    }
+    public function technician():BelongsTo{return $this->belongsTo(User::class,'technician_id');}
+    public function rating():HasOne{return $this->hasOne(Rating::class);}
 }

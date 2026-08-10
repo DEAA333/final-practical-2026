@@ -1,7 +1,6 @@
 {
-  "name": "college/laravel-practical-exam",
+  "name": "college/laravel13-practical-exam",
   "type": "project",
-  "description": "Laravel 13 practical exam starter project",
   "require": {
     "php": "^8.3",
     "laravel/framework": "^13.0",
@@ -18,20 +17,10 @@
     "psr-4": {
       "App\\": "app/",
       "Database\\Factories\\": "database/factories/",
-      "Database\\Seeders\\": "database/seeders/"
+      "Tests\\": "tests/"
     }
   },
   "scripts": {
-    "setup": [
-      "composer install",
-      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-      "@php artisan key:generate",
-      "@php artisan migrate --seed"
-    ],
-    "test": [
-      "@php artisan test"
-    ]
-  },
-  "minimum-stability": "stable",
-  "prefer-stable": true
+    "test": "@php artisan test"
+  }
 }
