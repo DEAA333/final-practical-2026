@@ -1,1 +1,7 @@
-@extends('layouts.app') @section('content')<h1>Dashboard</h1><div class="row">@foreach([['Total',$total],['Pending',$pending],['In progress',$inProgress],['Completed',$completed]] as [$n,$v])<div class="card">{{$n}}<h2>{{$v}}</h2></div>@endforeach</div>@endsection
+@extends('layouts.app') @section('content')
+    <h1>Dashboard</h1>
+    <div class="row">
+        @foreach([['Total', $total], ['Pending', $pending], ['In progress', $inProgress], ['Completed', $completed]] as [$n, $v])
+            <div class="card">{{$n}}<h2>{{$v}}</h2>
+        </div>@endforeach
+</div>@endsection

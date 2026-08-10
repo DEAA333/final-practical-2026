@@ -1,1 +1,15 @@
-@extends('layouts.app') @section('content')<h1>Request #{{$m->id}}</h1><div class="card"><p><b>Title:</b> {{$m->title}}</p><p><b>Description:</b> {{$m->description}}</p><p><b>Customer:</b> {{$m->customer?->name}}</p><p><b>Technician:</b> {{$m->technician?->name}}</p><p><b>Priority:</b> {{$m->priority}}</p><p><b>Status:</b> {{$m->status}}</p></div><a href="{{route('requests.edit',$m)}}">Edit</a><form method="POST" action="{{route('requests.destroy',$m)}}">@csrf @method('DELETE')<button>Delete</button></form>@if($m->status==='completed' && !$m->rating)<form method="POST" action="{{route('ratings.store',$m)}}">@csrf<input name="customer_id" placeholder="Customer ID"><input name="rating" type="number" min="1" max="5"><textarea name="comment"></textarea><button>Rate</button></form>@endif @endsection
+@extends('layouts.app') @section('content')
+    <h1>Request #{{$m->id}}</h1>
+    <div class="card">
+        <p><b>Title:</b> {{$m->title}}</p>
+        <p><b>Description:</b> {{$m->description}}</p>
+        <p><b>Customer:</b> {{$m->customer?->name}}</p>
+        <p><b>Technician:</b> {{$m->technician?->name}}</p>
+        <p><b>Priority:</b> {{$m->priority}}</p>
+        <p><b>Status:</b> {{$m->status}}</p>
+    </div><a href="{{route('requests.edit', $m)}}">Edit</a>
+    <form method="POST" action="{{route('requests.destroy', $m)}}">@csrf @method('DELETE')<button>Delete</button></form>
+    @if($m->status === 'completed' && !$m->rating)
+        <form method="POST" action="{{route('ratings.store', $m)}}">@csrf<input name="customer_id"
+                placeholder="Customer ID"><input name="rating" type="number" min="1" max="5"><textarea
+name="comment"></textarea><button>Rate</button></form>@endif @endsection

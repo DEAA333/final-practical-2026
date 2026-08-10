@@ -7,7 +7,6 @@ class MaintenanceRequest extends Model {
     protected $fillable=['customer_id','technician_id','title','description','priority','status','requested_at'];
     protected $casts=['requested_at'=>'date'];
 
-    // INTENTIONAL EXAM BUG: students must diagnose and correct this relation.
     public function customer(){return $this->hasMany(Customer::class);}
 
     public function technician():BelongsTo{return $this->belongsTo(User::class,'technician_id');}

@@ -1,1 +1,17 @@
-@extends('layouts.app') @section('content')<h1>Edit #{{$maintenanceRequest->id}}</h1><form method="POST" action="{{route('requests.update',$maintenanceRequest)}}">@csrf @method('PUT')<input name="title" value="{{$maintenanceRequest->title}}"><textarea name="description">{{$maintenanceRequest->description}}</textarea><select name="customer_id">@foreach($customers as $c)<option value="{{$c->id}}" @selected($c->id==$maintenanceRequest->customer_id)>{{$c->name}}</option>@endforeach</select><select name="technician_id"><option value="">Not assigned</option>@foreach($technicians as $t)<option value="{{$t->id}}" @selected($t->id==$maintenanceRequest->technician_id)>{{$t->name}}</option>@endforeach</select><select name="priority">@foreach(['low','medium','high'] as $p)<option value="{{$p}}" @selected($p===$maintenanceRequest->priority)>{{$p}}</option>@endforeach</select><select name="status">@foreach(['pending','in_progress','completed','cancelled'] as $s)<option value="{{$s}}" @selected($s===$maintenanceRequest->status)>{{$s}}</option>@endforeach</select><input name="requested_at" type="date" value="{{$maintenanceRequest->requested_at?->format('Y-m-d')}}"><button>Update</button></form>@endsection
+@extends('layouts.app') @section('content')
+    <h1>Edit #{{$maintenanceRequest->id}}</h1>
+    <form method="POST" action="{{route('requests.update', $maintenanceRequest)}}">@csrf @method('PUT')<input name="title"
+            value="{{$maintenanceRequest->title}}"><textarea
+            name="description">{{$maintenanceRequest->description}}</textarea><select
+            name="customer_id">@foreach($customers as $c)
+            <option value="{{$c->id}}" @selected($c->id == $maintenanceRequest->customer_id)>{{$c->name}}</option>@endforeach
+        </select><select name="technician_id">
+            <option value="">Not assigned</option>@foreach($technicians as $t)
+                <option value="{{$t->id}}" @selected($t->id == $maintenanceRequest->technician_id)>{{$t->name}}</option>
+            @endforeach
+        </select><select name="priority">@foreach(['low', 'medium', 'high'] as $p)
+        <option value="{{$p}}" @selected($p === $maintenanceRequest->priority)>{{$p}}</option>@endforeach
+        </select><select name="status">@foreach(['pending', 'in_progress', 'completed', 'cancelled'] as $s)
+        <option value="{{$s}}" @selected($s === $maintenanceRequest->status)>{{$s}}</option>@endforeach
+        </select><input name="requested_at" type="date"
+value="{{$maintenanceRequest->requested_at?->format('Y-m-d')}}"><button>Update</button></form>@endsection
