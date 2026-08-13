@@ -58,14 +58,29 @@
 </head>
 
 <body>
-    <nav><a href="{{route('dashboard')}}">Dashboard</a><a href="{{route('requests.index')}}">Requests</a><a
-            href="{{route('requests.create')}}">New Request</a>@auth {{auth()->user()->name}}
-            <form method="POST" action="{{route('logout')}}">@csrf<button>Logout</button></form>@endauth
-    </nav>@if(session('success'))
-    <div class="success">{{session('success')}}</div>@endif@if($errors->any())
-        <ul>@foreach($errors->all() as $e)
-        <li>{{$e}}</li>@endforeach
-    </ul>@endif @yield('content')
+    <nav>
+        <a href="{{route('dashboard')}}">Dashboard</a>
+        <a href="{{route('requests.index')}}">Requests</a>
+        <a href="{{route('requests.create')}}">New Request</a>
+        @auth
+            {{auth()->user()->name}}
+            <form method="POST" action="{{route('logout')}}">@csrf<button>Logout</button></form>
+        @endauth
+    </nav>
+
+    @if(session('success'))
+        <div class="success">{{session('success')}}</div>
+    @endif
+
+    @if($errors->any())
+        <ul>
+            @foreach($errors->all() as $e)
+                <li>{{$e}}</li>
+            @endforeach
+        </ul>
+    @endif
+
+    @yield('content')
 </body>
 
 </html>
