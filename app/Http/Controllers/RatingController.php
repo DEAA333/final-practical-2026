@@ -5,14 +5,14 @@ use App\Models\Rating;
 use Illuminate\Http\Request;
 class RatingController
 {
-    public function store(Request $r, MaintenanceRequest $m)
+    public function store(Request $r, MaintenanceRequest $maintenanceRequest)
     {
         $v = $r->validate([
             'customer_id' => 'required|exists:customers,id',
             'rating' => 'required|integer|between:1,5',
             'comment' => 'nullable|string|max:1000'
         ]);
-        Rating::create(['maintenance_request_id' => $m->id, ...$v]);
+        Rating::create(['maintenance_request_id' => $maintenanceRequest->id, ...$v]);
         return back()->with('success', 'Rating saved.');
     }
 }

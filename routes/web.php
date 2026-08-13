@@ -12,6 +12,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('requests', MaintenanceRequestController::class);
+    Route::resource('requests', MaintenanceRequestController::class)
+        ->parameters(['requests' => 'maintenanceRequest']);
     Route::post('/requests/{maintenanceRequest}/ratings', [RatingController::class, 'store'])->name('ratings.store');
 });

@@ -12,8 +12,8 @@ class MaintenanceRequestApiController
             $q->where('status', $r->string('status'));
         return response()->json($q->latest()->paginate(10));
     }
-    public function show(MaintenanceRequest $m)
+    public function show(MaintenanceRequest $maintenanceRequest)
     {
-        return response()->json($m->load(['customer', 'technician', 'rating']));
+        return response()->json($maintenanceRequest->load(['customer', 'technician', 'rating']));
     }
 }

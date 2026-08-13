@@ -82,27 +82,27 @@ class MaintenanceRequestController
         return redirect()->route('requests.index')->with('success', 'Request created.');
     }
 
-    public function show(MaintenanceRequest $m)
+    public function show(MaintenanceRequest $maintenanceRequest)
     {
-        $m->load(['customer', 'technician', 'rating']);
-        return view('requests.show', compact('m'));
+        $maintenanceRequest->load(['customer', 'technician', 'rating']);
+        return view('requests.show', ['m' => $maintenanceRequest]);
     }
 
-    public function edit(MaintenanceRequest $m)
+    public function edit(MaintenanceRequest $maintenanceRequest)
     {
-        return view('requests.edit', ['maintenanceRequest' => $m, 'customers' => Customer::orderBy('name')->get(), 'technicians' => User::where('role', 'technician')->orderBy('name')->get()]);
+        return view('requests.edit', ['maintenanceRequest' => $maintenanceRequest, 'customers' => Customer::orderBy('name')->get(), 'technicians' => User::where('role', 'technician')->orderBy('name')->get()]);
     }
 
-    public function update(Request $r, MaintenanceRequest $m)
+    public function update(Request $r, MaintenanceRequest $maintenanceRequest)
     {
         $v = $r->validate($this->rules(withStatus: true), [], $this->attributes());
-        $m->update($v);
-        return redirect()->route('requests.show', $m)->with('success', 'Request updated.');
+        $maintenanceRequest->update($v);
+        return redirect()->route('requests.show', $maintenanceRequest)->with('success', 'Request updated.');
     }
 
-    public function destroy(MaintenanceRequest $m)
+    public function destroy(MaintenanceRequest $maintenanceRequest)
     {
-        $m->delete();
+        $maintenanceRequest->delete();
         return redirect()->route('requests.index')->with('success', 'Request deleted.');
     }
 }
