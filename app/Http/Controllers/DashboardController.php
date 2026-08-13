@@ -8,11 +8,16 @@ class DashboardController
         $q = MaintenanceRequest::query();
         if (auth()->user()->isTechnician())
             $q->where('technician_id', auth()->id());
+
+        $counts = $q->selectRaw('status, count(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
         return view('dashboard', [
-            'total' => (clone $q)->count(),
-            'pending' => (clone $q)->where('status', 'pending')->count(),
-            'inProgress' => (clone $q)->where('status', 'in_progress')->count(),
-            'completed' => (clone $q)->where('status', 'completed')->count()
+            'total' => $counts->sum(),
+            'pending' => $counts['pending'] ?? 0,
+            'inProgress' => $counts['in_progress'] ?? 0,
+            'completed' => $counts['completed'] ?? 0
         ]);
     }
 }
