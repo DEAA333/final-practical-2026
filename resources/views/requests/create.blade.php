@@ -1,0 +1,13 @@
+@extends('layouts.app') @section('content')
+    <h1>Create</h1>
+    <form method="POST" action="{{route('requests.store')}}">@csrf<select name="customer_id">
+            <option value="">Customer</option>@foreach($customers as $c)
+            <option value="{{$c->id}}">{{$c->name}}</option>@endforeach
+        </select><select name="technician_id">
+            <option value="">Technician</option>@foreach($technicians as $t)
+            <option value="{{$t->id}}">{{$t->name}}</option>@endforeach
+        </select><input name="title" placeholder="Title"><textarea name="description"
+            placeholder="Description"></textarea><select name="priority">@foreach(['low', 'medium', 'high'] as $p)
+            <option value="{{$p}}">{{$p}}</option>@endforeach
+        </select><input name="requested_at" type="date" value="{{now()->format('Y-m-d')}}"><button>Save</button></form>
+@endsection
