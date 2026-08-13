@@ -7,8 +7,11 @@
         <p><b>Technician:</b> {{$m->technician?->name}}</p>
         <p><b>Priority:</b> {{$m->priority}}</p>
         <p><b>Status:</b> {{$m->status}}</p>
-    </div><a href="{{route('requests.edit', $m)}}">Edit</a>
-    <form method="POST" action="{{route('requests.destroy', $m)}}">@csrf @method('DELETE')<button>Delete</button></form>
+    </div>
+    @can('update', $m)<a href="{{route('requests.edit', $m)}}">Edit</a>@endcan
+    @can('delete', $m)
+        <form method="POST" action="{{route('requests.destroy', $m)}}">@csrf @method('DELETE')<button>Delete</button></form>
+    @endcan
     @if($m->status === 'completed' && !$m->rating)
         <form method="POST" action="{{route('ratings.store', $m)}}">@csrf<input name="customer_id"
                 placeholder="Customer ID"><input name="rating" type="number" min="1" max="5"><textarea

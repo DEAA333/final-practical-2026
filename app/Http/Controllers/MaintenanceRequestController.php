@@ -4,6 +4,7 @@ use App\Models\Customer;
 use App\Models\MaintenanceRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class MaintenanceRequestController
@@ -61,6 +62,10 @@ class MaintenanceRequestController
             $query->where('technician_id', $r->technician_id);
         }
 
+        if ($r->user()->isTechnician()) {
+            $query->where('technician_id', $r->user()->id);
+        }
+
         $requests = $query->latest()->orderByDesc('id')->paginate(5)->withQueryString();
 
         $technicians = User::where('role', 'technician')->orderBy('name')->get();
@@ -84,17 +89,23 @@ class MaintenanceRequestController
 
     public function show(MaintenanceRequest $maintenanceRequest)
     {
+        Gate::authorize('view', $maintenanceRequest);
+
         $maintenanceRequest->load(['customer', 'technician', 'rating']);
         return view('requests.show', ['m' => $maintenanceRequest]);
     }
 
     public function edit(MaintenanceRequest $maintenanceRequest)
     {
+        Gate::authorize('update', $maintenanceRequest);
+
         return view('requests.edit', ['maintenanceRequest' => $maintenanceRequest, 'customers' => Customer::orderBy('name')->get(), 'technicians' => User::where('role', 'technician')->orderBy('name')->get()]);
     }
 
     public function update(Request $r, MaintenanceRequest $maintenanceRequest)
     {
+        Gate::authorize('update', $maintenanceRequest);
+
         $v = $r->validate($this->rules(withStatus: true), [], $this->attributes());
         $maintenanceRequest->update($v);
         return redirect()->route('requests.show', $maintenanceRequest)->with('success', 'Request updated.');
@@ -102,6 +113,8 @@ class MaintenanceRequestController
 
     public function destroy(MaintenanceRequest $maintenanceRequest)
     {
+        Gate::authorize('delete', $maintenanceRequest);
+
         $maintenanceRequest->delete();
         return redirect()->route('requests.index')->with('success', 'Request deleted.');
     }

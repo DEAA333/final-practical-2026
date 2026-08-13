@@ -33,7 +33,8 @@
                 <td>{{$r->technician?->name}}</td>
                 <td>{{$r->priority}}</td>
                 <td>{{$r->status}}</td>
-                <td><a href="{{route('requests.show', $r)}}">View</a> <a href="{{route('requests.edit', $r)}}">Edit</a></td>
+                <td>@can('view', $r)<a href="{{route('requests.show', $r)}}">View</a>@endcan
+                    @can('update', $r)<a href="{{route('requests.edit', $r)}}">Edit</a>@endcan</td>
         </tr>@empty<tr>
             <td colspan="7">No results</td>
         </tr>@endforelse
