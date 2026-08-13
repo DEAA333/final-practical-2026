@@ -4,14 +4,41 @@ use App\Models\Customer;
 use App\Models\MaintenanceRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class MaintenanceRequestController
 {
+    private function rules(bool $withStatus): array
+    {
+        $rules = [
+            'customer_id' => 'required|exists:customers,id',
+            'technician_id' => ['nullable', Rule::exists('users', 'id')->where('role', 'technician')],
+            'title' => 'required|string|min:5|max:100',
+            'description' => 'required|string|min:10|max:2000',
+            'priority' => 'required|in:low,medium,high',
+            'requested_at' => 'required|date'
+        ];
+
+        if ($withStatus) {
+            $rules['status'] = 'required|in:pending,in_progress,completed,cancelled';
+        }
+
+        return $rules;
+    }
+
+    private function attributes(): array
+    {
+        return [
+            'customer_id' => 'customer',
+            'technician_id' => 'technician',
+            'requested_at' => 'requested date'
+        ];
+    }
+
     public function index(Request $r)
     {
         $query = MaintenanceRequest::with(['customer', 'technician']);
 
-        // البحث في العنوان أو اسم العميل
         if ($r->filled('search')) {
             $search = $r->search;
             $query->where(function($q) use ($search) {
@@ -22,23 +49,18 @@ class MaintenanceRequestController
             });
         }
 
-        // فلتر الحالة
         if ($r->filled('status')) {
             $query->where('status', $r->status);
         }
 
-        // فلتر الأولوية
         if ($r->filled('priority')) {
             $query->where('priority', $r->priority);
         }
 
-        // فلتر الفني
         if ($r->filled('technician_id')) {
             $query->where('technician_id', $r->technician_id);
         }
 
-        // orderByDesc('id') ترتيب ثابت حتى لو كذا طلب عندهم نفس created_at،
-        // بدونه ممكن يتكرر أو يختفي صف بين الصفحات
         $requests = $query->latest()->orderByDesc('id')->paginate(5)->withQueryString();
 
         $technicians = User::where('role', 'technician')->orderBy('name')->get();
@@ -53,17 +75,7 @@ class MaintenanceRequestController
 
     public function store(Request $r)
     {
-        // validate() بترجّع الحقول المفحوصة فقط، فلازم نفحص كل حقل بدنا نحفظه
-        $v = $r->validate([
-            'customer_id' => 'required|exists:customers,id',
-            'technician_id' => 'nullable|exists:users,id',
-            'title' => 'required|min:5|max:100',
-            'description' => 'required|min:10',
-            'priority' => 'required|in:low,medium,high',
-            'requested_at' => 'required|date'
-        ]);
-
-        // فورم الإنشاء ما فيه حقل status، فأي طلب جديد بيبدأ pending
+        $v = $r->validate($this->rules(withStatus: false), [], $this->attributes());
         $v['status'] = 'pending';
 
         MaintenanceRequest::create($v);
@@ -83,15 +95,7 @@ class MaintenanceRequestController
 
     public function update(Request $r, MaintenanceRequest $m)
     {
-        $v = $r->validate([
-            'title' => 'required|min:5|max:100',
-            'description' => 'required|min:10',
-            'priority' => 'required|in:low,medium,high',
-            'status' => 'required|in:pending,in_progress,completed,cancelled',
-            'customer_id' => 'required|exists:customers,id',
-            'technician_id' => 'nullable|exists:users,id',
-            'requested_at' => 'required|date'
-        ]);
+        $v = $r->validate($this->rules(withStatus: true), [], $this->attributes());
         $m->update($v);
         return redirect()->route('requests.show', $m)->with('success', 'Request updated.');
     }

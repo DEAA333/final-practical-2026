@@ -55,8 +55,25 @@
             background: #e4f6e8
         }
 
-        /* الـ pagination الافتراضي في Laravel مبني على Tailwind والمشروع ما فيه Tailwind،
-           فبنخفي نسخة الموبايل المكررة وبنرتب الأزرار يدوياً */
+        .errors {
+            padding: 10px;
+            background: #fde8e8;
+            border: 1px solid #f5b5b5;
+            margin: 0 0 15px
+        }
+
+        .field-error {
+            color: #c00;
+            font-size: 13px;
+            margin: 4px 0 10px
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px
+        }
+
         .hidden {
             display: none
         }
@@ -95,11 +112,14 @@
     @endif
 
     @if($errors->any())
-        <ul>
-            @foreach($errors->all() as $e)
-                <li>{{$e}}</li>
-            @endforeach
-        </ul>
+        <div class="errors">
+            <strong>Please fix the following {{$errors->count()}} error(s):</strong>
+            <ul>
+                @foreach($errors->all() as $e)
+                    <li>{{$e}}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     @yield('content')
