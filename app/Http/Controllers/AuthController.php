@@ -15,7 +15,7 @@ class AuthController
             $r->session()->regenerate();
             return redirect()->intended(route('dashboard'));
         }
-        return back()->withErrors(['email' => 'Invalid credentials.']);
+        return back()->withInput($r->only('email'))->withErrors(['email' => 'Invalid credentials.']);
     }
     public function logout(Request $r)
     {
