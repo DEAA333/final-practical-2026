@@ -7,7 +7,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('maintenance_request_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('maintenance_request_id')->unique()->constrained()->cascadeOnDelete();
             $table->foreignId('customer_id')->constrained()->cascadeOnDelete();
             $table->unsignedTinyInteger('rating');
             $table->text('comment')->nullable();
