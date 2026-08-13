@@ -53,7 +53,19 @@ class MaintenanceRequestController
 
     public function store(Request $r)
     {
-        $v = $r->validate(['title' => 'required']);
+        // validate() بترجّع الحقول المفحوصة فقط، فلازم نفحص كل حقل بدنا نحفظه
+        $v = $r->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'technician_id' => 'nullable|exists:users,id',
+            'title' => 'required|min:5|max:100',
+            'description' => 'required|min:10',
+            'priority' => 'required|in:low,medium,high',
+            'requested_at' => 'required|date'
+        ]);
+
+        // فورم الإنشاء ما فيه حقل status، فأي طلب جديد بيبدأ pending
+        $v['status'] = 'pending';
+
         MaintenanceRequest::create($v);
         return redirect()->route('requests.index')->with('success', 'Request created.');
     }
