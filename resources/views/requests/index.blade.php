@@ -4,13 +4,17 @@
         <div><input name="search" value="{{request('search')}}" placeholder="Search title/customer"></div>
         <div><select name="status">
                 <option value="">All statuses</option>@foreach(['pending', 'in_progress', 'completed', 'cancelled'] as $s)
-                <option value="{{$s}}">{{$s}}</option>@endforeach
+                <option value="{{$s}}" @selected(request('status') === $s)>{{$s}}</option>@endforeach
             </select></div>
         <div><select name="priority">
                 <option value="">All priorities</option>@foreach(['low', 'medium', 'high'] as $p)
-                <option value="{{$p}}">{{$p}}</option>@endforeach
+                <option value="{{$p}}" @selected(request('priority') === $p)>{{$p}}</option>@endforeach
             </select></div>
-        <div><button>Filter</button></div>
+        <div><select name="technician_id">
+                <option value="">All technicians</option>@foreach($technicians as $t)
+                <option value="{{$t->id}}" @selected((string) request('technician_id') === (string) $t->id)>{{$t->name}}</option>@endforeach
+            </select></div>
+        <div><button>Filter</button> <a href="{{route('requests.index')}}">Reset</a></div>
     </form>
     <table>
         <tr>

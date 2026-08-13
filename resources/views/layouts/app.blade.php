@@ -54,6 +54,28 @@
             padding: 10px;
             background: #e4f6e8
         }
+
+        /* الـ pagination الافتراضي في Laravel مبني على Tailwind والمشروع ما فيه Tailwind،
+           فبنخفي نسخة الموبايل المكررة وبنرتب الأزرار يدوياً */
+        .hidden {
+            display: none
+        }
+
+        nav[role="navigation"] {
+            display: block;
+            margin-top: 15px
+        }
+
+        nav[role="navigation"] span[aria-current="page"] span {
+            font-weight: bold;
+            text-decoration: underline
+        }
+
+        nav[role="navigation"] svg {
+            width: 16px;
+            height: 16px;
+            vertical-align: middle
+        }
     </style>
 </head>
 

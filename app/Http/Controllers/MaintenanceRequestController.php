@@ -37,9 +37,13 @@ class MaintenanceRequestController
             $query->where('technician_id', $r->technician_id);
         }
 
-        $requests = $query->latest()->paginate(5)->withQueryString();
+        // orderByDesc('id') ترتيب ثابت حتى لو كذا طلب عندهم نفس created_at،
+        // بدونه ممكن يتكرر أو يختفي صف بين الصفحات
+        $requests = $query->latest()->orderByDesc('id')->paginate(5)->withQueryString();
 
-        return view('requests.index', compact('requests'));
+        $technicians = User::where('role', 'technician')->orderBy('name')->get();
+
+        return view('requests.index', compact('requests', 'technicians'));
     }
 
     public function create()
