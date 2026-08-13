@@ -7,7 +7,9 @@
         <p><b>Technician:</b> {{$m->technician?->name}}</p>
         <p><b>Priority:</b> {{$m->priority}}</p>
         <p><b>Status:</b> {{$m->status}}</p>
+        <p><b>Requested date:</b> {{$m->requested_at?->format('Y-m-d')}}</p>
     </div>
+    <a href="{{route('requests.index')}}">Back to list</a>
     @can('update', $m)<a href="{{route('requests.edit', $m)}}">Edit</a>@endcan
     @can('delete', $m)
         <form method="POST" action="{{route('requests.destroy', $m)}}">@csrf @method('DELETE')<button>Delete</button></form>
